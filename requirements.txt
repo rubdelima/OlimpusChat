@@ -1,0 +1,7 @@
+tqdm
+ollama
+langchain
+langchain-ollama
+langchain-google-genai
+python-dotenv
+prompt_toolkit
