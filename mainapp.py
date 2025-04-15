@@ -1,5 +1,6 @@
 import streamlit as st
-from app_utils.homepage_texts import get_text
+from app.utils.homepage_texts import get_text
+from app.login import setup
 
 # Page Settings
 st.set_page_config(page_title="OlimpusChat", layout="centered", initial_sidebar_state="collapsed", page_icon="./images/olimpus_logo.png")
@@ -13,6 +14,9 @@ st.session_state.language = st.sidebar.selectbox(
     ("Português(BR)", "English"), 
     index=0 if st.session_state.language == "Português(BR)" else 1
 )
+
+# Login
+setup()
 
 # Home Page
 col1, col2, col3 = st.columns([1,2,1])

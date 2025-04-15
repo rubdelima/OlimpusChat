@@ -6,3 +6,5 @@ langchain-google-genai
 python-dotenv
 prompt_toolkit
 streamlit
+google-cloud-firestore
+google-auth

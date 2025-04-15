@@ -1,4 +1,4 @@
-from .model import God
+from lib.models import God
 from lib.background import backgrounds_en, backgrounds_pt
 
 gods_list : list[God] = [
