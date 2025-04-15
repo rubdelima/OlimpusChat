@@ -3,6 +3,7 @@ from google.oauth2 import service_account
 from lib.models import UserBase, User
 import os
 import uuid
+import traceback
 
 CREDENTIALS_PATH = "./firebase.json"
 
@@ -36,10 +37,11 @@ class FirestoreClient(Client):
         try:
             query = self.collection("users")\
                 .where(filter=FieldFilter("email", "==", user_mail))\
-                .where(filter=FieldFilter("user_password", "==", user_password))\
+                .where(filter=FieldFilter("password", "==", user_password))\
                 .limit(1).stream()
-            return User(**next(query))
+            return User(**(next(query).to_dict()))
         except:
+            traceback.print_exc()
             raise Exception("Verifique se seu email/senha está correto e tente novamente")
 
 firestore = FirestoreClient()

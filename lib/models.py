@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 import warnings
 import re
 from pydantic import BaseModel
-from typing import Optional, List
+from typing import Optional, List, Dict
 from datetime import datetime
 
 load_dotenv()
@@ -72,9 +72,10 @@ class UserBase(BaseModel):
     password :str
     google_api_key : str
 
+
 class User(UserBase):
     id: str
-    chat_ids: List[str] = []
+    chat_ids: Dict[str, str] = {}
 
 class GodsChat(BaseModel):
     name : str

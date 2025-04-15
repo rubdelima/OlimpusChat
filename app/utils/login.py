@@ -20,6 +20,7 @@ def show_login_signup():
                 st.session_state.user_logged_in = True
                 st.session_state.user = user
                 st.success("Login successful!")
+                st.rerun()
             except Exception as e:
                 st.error(f"Erro: {str(e)}")
 
@@ -40,8 +41,14 @@ def show_signup():
                 st.session_state.user_logged_in = True
                 st.session_state.user = new_user
                 st.success("Cadastro e login bem-sucedidos!")
+                st.rerun()
             except Exception as e:
                 st.error(f"Erro: {str(e)}")
+
+def logout():
+    st.session_state.update({"user_logged_in": False, "user" : None})
+    st.rerun()
+                            
 
 def setup():
     print(f"User: {st.session_state.user}")
@@ -52,7 +59,7 @@ def setup():
     
     if st.session_state.user_logged_in:
         
-        bt1.button("Logout",use_container_width=True,  on_click=lambda: st.session_state.update({"user_logged_in": False, "user" : None}))
+        bt1.button("Logout",use_container_width=True,  on_click=logout)
         bt2.button("Configurações",use_container_width=True,  on_click=lambda: st.session_state.update({"settings": True}))
     
     else:

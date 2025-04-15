@@ -1,5 +1,9 @@
 ## **OlimpusChat**
 
+<p align="center">
+  <img src="./images/olimpus_logo.png" alt="estuda-ai" width="30%">
+</p>
+
 ### **Instructions to Start the Project**
 
 This is the **OlimpusChat** project, where the gods of Olympus debate various topics using artificial intelligence. Follow the steps below to get started:

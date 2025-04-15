@@ -6,8 +6,6 @@ if 'language' not in st.session_state:
 
 title, content = get_text(st.session_state.language)
 
-st.set_page_config(page_title=title, layout="centered", initial_sidebar_state="collapsed", page_icon="./images/olimpus_logo.png")
-
 st.title(f"🔍 {title}")
 
 st.markdown(content)
