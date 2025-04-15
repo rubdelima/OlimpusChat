@@ -7,7 +7,7 @@ from lib.background import (
     first_message_prompt_pt, first_message_prompt_en, second_message_prompt_pt, second_message_prompt_en,   
 )
 
-from lib.models import GlobalModel
+from lib.models.llm import GlobalModel
 
 def build_context_pt(
     god1:GlobalModel, 

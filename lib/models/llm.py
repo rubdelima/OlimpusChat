@@ -2,15 +2,7 @@ from langchain_ollama.llms import OllamaLLM
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.messages import SystemMessage, AIMessage, BaseMessageChunk, BaseMessage
 from langchain.base_language import BaseLanguageModel
-from dotenv import load_dotenv
-import warnings
 import re
-from pydantic import BaseModel
-from typing import Optional, List, Dict
-from datetime import datetime
-
-load_dotenv()
-warnings.filterwarnings("ignore")
 
 colors = {
     "reset": "\033[0m",
@@ -26,11 +18,6 @@ colors = {
     "white":"\033[37m",
 }
 
-class God(BaseModel):
-    name : str
-    background_pt : str
-    background_en : str
-    image : str
 
 class GlobalModel():
     llm : BaseLanguageModel
@@ -65,43 +52,3 @@ class GlobalModel():
         response = re.sub(r"<think>.*?</think>", "", response)
         self.messages.append(AIMessage(content=response))
         return response
-    
-class UserBase(BaseModel):
-    username: str
-    email: str
-    password :str
-    google_api_key : str
-
-
-class User(UserBase):
-    id: str
-    chat_ids: Dict[str, str] = {}
-
-class GodsChat(BaseModel):
-    name : str
-    content : str
-
-class Chat(BaseModel):
-    id: str
-    user_id: str
-    # last_change : datetime 
-    
-    theme: str
-    rounds : int
-    audio_mode : bool = False
-    
-    god1 : str
-    god1_idea : str
-    god1_type : str
-    god1_model : str
-    
-    god2 : str
-    god2_idea : str
-    god2_type : str
-    god2_model : str
-    
-    gods : List[str]
-    gods_type : str
-    
-    
-    chat : List[GodsChat]
