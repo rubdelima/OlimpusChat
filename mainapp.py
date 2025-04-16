@@ -2,9 +2,14 @@ import streamlit as st
 from app.utils.login import setup
 from app.utils.chat import render_chat
 import app.utils.user_preferences as preferences
-
+import traceback
 # Page Settings
-st.set_page_config(page_title="OlimpusChat", layout="centered", initial_sidebar_state="collapsed", page_icon="./images/olimpus_logo.png")
+try:
+    st.set_page_config(page_title="OlimpusChat", layout="centered", initial_sidebar_state="collapsed", page_icon="./images/olimpus_logo.png")
+except:
+    traceback.print_exc()
+    pass
+
 st.logo("./images/olimpus_logo.png", size="large")
 
 # Build Sesion State, and update Cookies

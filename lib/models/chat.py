@@ -26,6 +26,6 @@ class Chat(BaseModel):
     
     gods : List[str]
     gods_type : str
+    gods_models : str
     
-    
-    chat : List[GodsChat]
+    chat : List[GodsChat] = []
