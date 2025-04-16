@@ -1,5 +1,6 @@
 import streamlit as st
 from app.utils.meet_gods_texts import get_text
+from lib.gods import gods_dict, gods_list
 
 if 'language' not in st.session_state:
     st.session_state.language = "Português(BR)"
@@ -10,7 +11,6 @@ st.title(f"🔍 {title}")
 
 st.markdown(content)
 
-from lib.gods import gods_dict, gods_list
 
 gods_tabs = st.tabs(gods_dict.keys())
 

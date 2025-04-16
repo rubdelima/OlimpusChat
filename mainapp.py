@@ -1,21 +1,18 @@
 import streamlit as st
 from app.utils.login import setup
 from app.utils.chat import render_chat
-from lib.models import User
+import app.utils.user_preferences as preferences
 
 # Page Settings
 st.set_page_config(page_title="OlimpusChat", layout="centered", initial_sidebar_state="collapsed", page_icon="./images/olimpus_logo.png")
 st.logo("./images/olimpus_logo.png", size="large")
 
-# Language Settings
-if 'language' not in st.session_state:
-    st.session_state.language = "Português(BR)"
+# Build Sesion State, and update Cookies
+preferences.initialize_preferences()
+preferences.refresh_cookies()
 
-st.session_state.language = st.sidebar.selectbox(
-    "Select Language", 
-    ("Português(BR)", "English"), 
-    index=0 if st.session_state.language == "Português(BR)" else 1
-)
+# Language Settings
+preferences.language_selector()
 
 # Login
 setup()
@@ -29,7 +26,7 @@ pages = {
 }
 
 if st.session_state.user is not None:
-    user : User = st.session_state.user
+    user = st.session_state.user
     pages["Chats"] = [
         st.Page(lambda : render_chat(chat_id), title=chat_title, icon="💬", url_path=chat_id)
         for chat_id, chat_title in user.chat_ids.items()

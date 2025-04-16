@@ -8,3 +8,4 @@ prompt_toolkit
 streamlit
 google-cloud-firestore
 google-auth
+streamlit-cookies-controller

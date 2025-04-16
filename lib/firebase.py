@@ -43,5 +43,11 @@ class FirestoreClient(Client):
         except:
             traceback.print_exc()
             raise Exception("Verifique se seu email/senha está correto e tente novamente")
+    
+    def login_by_id(self, user_id :str):
+        user_ref = self.collection("users").document(user_id).get()
+        if user_ref.exists:
+            return User(**user_ref.to_dict())
+        raise Exception("Não foi possível encontrar o usuário salvo")
 
 firestore = FirestoreClient()

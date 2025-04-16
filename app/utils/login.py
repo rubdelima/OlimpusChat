@@ -49,9 +49,8 @@ def logout():
     st.session_state.update({"user_logged_in": False, "user" : None})
     st.rerun()
                             
-
 def setup():
-    print(f"User: {st.session_state.user}")
+    # print(f"User: {st.session_state.user}")
     st.sidebar.subheader(f"Bem vindo, {st.session_state.user.username}" if st.session_state.user_logged_in
                  else "Faça o Login")
     
