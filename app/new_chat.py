@@ -4,6 +4,7 @@ from lib.gods import gods_dict, gods_list
 import ollama
 from app.utils.user_preferences import initialize_preferences, refresh_cookies
 import uuid
+from lib.firebase import firestore
 
 initialize_preferences()
 refresh_cookies()
@@ -59,22 +60,37 @@ god2_idea = st.text_input("Insira o Pensamento do Deus 2")
 
 st.divider()
 
-gods = st.multiselect("", options=list(set(gods_dict.keys())-{god1_name, god2_name}))
-gods_col = st.columns(4)
+gods = st.multiselect("Selecione ao menos 2 deues para serem a quantidade de jurados", options=list(set(gods_dict.keys())-{god1_name, god2_name}))
+gods_col = st.columns(4, vertical_alignment="bottom")
 gods_type = gods_col[0].selectbox("Selecione o tipo 3", options=models_type.keys())
 gods_model = gods_col[1].selectbox("Selecione o modelo 3", options=models_type.get(gods_type, [])) # type:ignore
 god2_name = gods_col[2].selectbox("Selecione um deus:", options=gods)
 god_info(gods_col[3], god2_name)
 
+# Settings Controllers
+sett_cols = st.columns(2, vertical_alignment="center")
+supervisioned_mode = sett_cols[0].checkbox("Modo Supervisionado")
+rounds = sett_cols[1].slider("Selecione a quantidade de rounds", min_value=2, max_value=10, step=2)
+
 def laucher_chat():
     chat = Chat(
         id = str(uuid.uuid4()), user_id= st.session_state.user.id,
-        theme=theme, rounds=4, audio_mode=False, 
+        theme=theme, rounds=rounds, audio_mode=False, supervisioned=supervisioned_mode,
         god1=god1_name, god1_type=god1_type, god1_model=god1_model,god1_idea=god1_idea,
         god2=god2_name, god2_type=god2_type, god2_model=god1_model,god2_idea=god2_idea,
         gods=gods, gods_type=gods_type, gods_models=gods_model
     )
-    print(chat)
+    # Adiciona o chat no usuário do session state
+    st.session_state.user.chat_ids[chat.id] = chat.theme
+    
+    # Atualiza no banco de dados
+    firestore.add_chat(st.session_state.user, chat)
+    
+    print(chat) #debug
+    
+    st.session_state.redirect_to_chat_id = chat.id
+    st.rerun()
+    
 
 st.button(
     "Iniciar Chat",

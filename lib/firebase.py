@@ -1,6 +1,6 @@
 from google.cloud.firestore_v1 import Client, ArrayUnion, ArrayRemove, Increment, FieldFilter
 from google.oauth2 import service_account
-from lib.models import UserBase, User
+from lib.models import UserBase, User, Chat
 import os
 import uuid
 import traceback
@@ -49,5 +49,11 @@ class FirestoreClient(Client):
         if user_ref.exists:
             return User(**user_ref.to_dict())
         raise Exception("Não foi possível encontrar o usuário salvo")
+    
+    def add_chat(self, user:User, chat:Chat):
+        self.collection("chats").document(chat.id).set(chat.model_dump())
+        self.collection("users").document(user.id).update(
+            {"chat_ids" : user.chat_ids}
+        )
 
 firestore = FirestoreClient()

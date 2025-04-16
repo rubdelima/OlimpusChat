@@ -13,6 +13,8 @@ class Chat(BaseModel):
     theme: str
     rounds : int
     audio_mode : bool = False
+    supervisioned : bool = False
+    
     
     god1 : str
     god1_idea : str
