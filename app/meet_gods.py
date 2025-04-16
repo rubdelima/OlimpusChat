@@ -1,6 +1,10 @@
 import streamlit as st
 from app.utils.meet_gods_texts import get_text
 from lib.gods import gods_dict, gods_list
+from app.utils.user_preferences import initialize_preferences, refresh_cookies
+
+initialize_preferences()
+refresh_cookies()
 
 if 'language' not in st.session_state:
     st.session_state.language = "Português(BR)"

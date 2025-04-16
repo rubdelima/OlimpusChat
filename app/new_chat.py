@@ -2,6 +2,10 @@ import streamlit as st
 from lib.models import Chat
 from lib.gods import gods_dict, gods_list
 import ollama
+from app.utils.user_preferences import initialize_preferences, refresh_cookies
+
+initialize_preferences()
+refresh_cookies()
 
 def god_info(popover, god_name):
     with popover.popover("Info"):

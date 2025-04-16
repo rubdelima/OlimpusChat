@@ -1,6 +1,7 @@
 import streamlit as st
 from lib.models import UserBase, User
 from lib.firebase import firestore
+from app.utils.user_preferences import controller, set_user
 
 if 'user_logged_in' not in st.session_state:
     st.session_state.user_logged_in = False
@@ -17,6 +18,7 @@ def show_login_signup():
         if submit_button:
             try:
                 user = firestore.get_user(email, password)
+                controller.set("user_id", user.id)
                 st.session_state.user_logged_in = True
                 st.session_state.user = user
                 st.success("Login successful!")
@@ -38,6 +40,7 @@ def show_signup():
             user_base = UserBase(username=username, email=email, password=password, google_api_key=google_api_key)
             try:
                 new_user = firestore.add_user(user_base)
+                controller.set("user_id", new_user.id)
                 st.session_state.user_logged_in = True
                 st.session_state.user = new_user
                 st.success("Cadastro e login bem-sucedidos!")
@@ -50,13 +53,18 @@ def logout():
     st.rerun()
                             
 def setup():
-    # print(f"User: {st.session_state.user}")
-    st.sidebar.subheader(f"Bem vindo, {st.session_state.user.username}" if st.session_state.user_logged_in
+    if st.session_state.get("user") is None:
+        cookies = controller.getAll()
+        if (user_id := cookies.get("user_id")):
+            set_user(user_id)
+    
+    print(f"User: {st.session_state.get("user")}")
+    st.sidebar.subheader(f"Bem vindo, {st.session_state.user.username}" if st.session_state.user is not None
                  else "Faça o Login")
     
     bt1, bt2 = st.sidebar.columns(2)
     
-    if st.session_state.user_logged_in:
+    if st.session_state.user is not None:
         
         bt1.button("Logout",use_container_width=True,  on_click=logout)
         bt2.button("Configurações",use_container_width=True,  on_click=lambda: st.session_state.update({"settings": True}))

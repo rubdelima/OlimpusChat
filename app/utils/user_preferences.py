@@ -1,7 +1,14 @@
 import streamlit as st
 from streamlit_cookies_controller import CookieController #type:ignore
+from lib.firebase import firestore
 
 controller = CookieController()
+
+def set_user(user_id):
+    controller.set("user_id", user_id)
+    st.session_state["user"] = firestore.login_by_id(user_id)
+    st.session_state["user_logged_in"] = True
+    
 
 def initialize_preferences():
     cookies = controller.getAll()
